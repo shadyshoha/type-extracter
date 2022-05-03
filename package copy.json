@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/parser": "^7.17.8",
+    "bridgets": "^1.0.5",
     "clipboardy": "^3.0.0",
     "copy-paste": "^1.3.0",
     "express": "^4.18.1",
@@ -18,6 +19,7 @@
     "joi-oid": "^1.1.2",
     "ts-node": "^10.7.0",
     "tstl": "^2.5.3",
+    "tsutils": "^3.21.0",
     "typescript": "^4.6.3",
     "typescript-interface-generator": "^0.0.6",
     "zod": "^3.14.3"

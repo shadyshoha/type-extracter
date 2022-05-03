@@ -1,5 +1,5 @@
 // import type { A } from "./test";
-export interface B {
+export interface BB {
   text: string;
   nb: number;
   parent: F;
@@ -9,7 +9,9 @@ export interface B {
   };
 }
 
+type B = 4 | 5;
+
 export interface F {
-  d: "pending" | true;
+  d: B;
   e: { st: string };
 }

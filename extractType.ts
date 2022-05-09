@@ -20,6 +20,7 @@ const generateDocumentation = (fileNames: string[], options: ts.CompilerOptions)
   let program = ts.createProgram(fileNames, options);
   // Get the checker, we will use it to find more about classes
   let checker = program.getTypeChecker();
+  // checker.getContextualType()
   let output: DocEntry[] = [];
 
   // Visit every sourceFile in the program
@@ -27,9 +28,11 @@ const generateDocumentation = (fileNames: string[], options: ts.CompilerOptions)
     sourceFile.typeReferenceDirectives;
     if (!sourceFile.isDeclarationFile) {
       // Walk the tree to search for classes
+      // log(sourceFile);
       ts.forEachChild(sourceFile, (c) => visit(c, checker, sourceFile));
     }
   }
+
   // print out the doc
   fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
 

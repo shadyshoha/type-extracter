@@ -44,26 +44,38 @@
 
 // export type typeEducation = { test: A<any> } | string;
 import { Request } from "express";
-import * as F from "./anotherFile";
+// import * as F from "./anotherFile";
 
 // import { Controller } from "bridgets";
 
-interface C {
-  H: 5 | 8;
-}
+// interface C {
+//   H: 5 | 8;
+// }
 
-type A = string | C["H"];
+// type A = string | C["H"];
+
+// interface B {
+//   super: string;
+// }
 
 interface B {
-  super: string;
+  test: "stirng";
+  b: Request;
 }
 
-class V {
-  N!: string;
-}
+const foo = (b: string) => {
+  type A = string | number;
 
-const gg = {
-  a: 5,
-} as const;
+  const c: B = "Yo" as any;
+  return { a: 4, b, c };
+};
 
-export type typeEducation = F["BB"];
+// class V {
+//   N!: string;
+// }
+
+// const gg: { a: number } = {
+//   a: 5,
+// } as const;
+
+export type typeEducation = typeof foo;

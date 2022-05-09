@@ -15,3 +15,7 @@ export interface F {
   d: B;
   e: { st: string };
 }
+
+export default () => {
+  return false;
+};

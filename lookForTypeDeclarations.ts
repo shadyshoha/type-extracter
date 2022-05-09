@@ -13,52 +13,52 @@ export const lookForTypeDeclarations = (
   identifiers: { [key: string]: { [key: string]: 1 } },
   indentLevel: number = 0
 ) => {
-  const indentation = " -".repeat(indentLevel) + (indentLevel > maxRecursion ? "x" : "");
-  log(indentation, ts.SyntaxKind[node.kind]);
-
-  log(indentation, node.getText());
-
-  if (tsKeywords.includes(node.getText())) return;
-
-  if (indentLevel && indentLevel > maxRecursion) return;
-
-  if (ts.isIdentifier(node)) {
-    console.log(
-      checker.getTypeAtLocation(node).aliasSymbol?.declarations?.length,
-      checker.getTypeAtLocation(node).getSymbol()?.getDeclarations()?.length,
-      checker.getTypeAtLocation(node).symbol?.valueDeclaration !== undefined,
-      checker.getTypeAtLocation(node).aliasSymbol?.valueDeclaration !== undefined
-    );
-    const declarations =
-      checker.getTypeAtLocation(node).aliasSymbol?.declarations ||
-      checker.getTypeAtLocation(node).getSymbol()?.getDeclarations();
-    const valueDeclaration = checker.getTypeAtLocation(node).symbol?.valueDeclaration;
-    if (node.getText() === "F") {
-      // log(valueDeclaration);
-      // log(declarations);
-      // log(checker.getTypeAtLocation(node).getSymbol()?.getDeclarations());
-      // log(checker.getTypeAtLocation(node).symbol?.declarations);
-      // log(checker.getTypeAtLocation(node).aliasSymbol?.valueDeclaration);
-    }
-
-    if (valueDeclaration) {
-      if (isAlreadyKnown(node, valueDeclaration, identifiers)) return;
-      lookForTypeDeclarations(valueDeclaration, sourceFile, checker, identifiers, indentLevel + 1);
-    } else if (declarations) {
-      declarations?.forEach((d) => {
-        if (isAlreadyKnown(node, d, identifiers)) return;
-        lookForTypeDeclarations(d, sourceFile, checker, identifiers, (indentLevel || 0) + 1);
-      });
-    } else {
-      log(checker.typeToString(checker.getTypeAtLocation(node)));
-    }
-  } else {
-    node
-      .getChildren()
-      .forEach((c) =>
-        lookForTypeDeclarations(c, sourceFile, checker, identifiers, (indentLevel || 0) + 1)
-      );
-  }
+  checker.getContextualType();
+  // log((sourceFile as any).locals);
+  // (sourceFile as any).locals.forEach((l: ts.Symbol) =>
+  //   log((l.valueDeclaration as any)?.name.escapedText)
+  // );
+  // const indentation = " -".repeat(indentLevel) + (indentLevel > maxRecursion ? "x" : "");
+  // log(indentation, ts.SyntaxKind[node.kind]);
+  // log(indentation, node.getText());
+  // if (tsKeywords.includes(node.getText())) return;
+  // if (indentLevel && indentLevel > maxRecursion) return;
+  // if (ts.isIdentifier(node)) {
+  //   console.log(
+  //     checker.getTypeAtLocation(node).aliasSymbol?.declarations?.length,
+  //     checker.getTypeAtLocation(node).getSymbol()?.getDeclarations()?.length,
+  //     checker.getTypeAtLocation(node).symbol?.valueDeclaration !== undefined,
+  //     checker.getTypeAtLocation(node).aliasSymbol?.valueDeclaration !== undefined
+  //   );
+  //   const declarations =
+  //     checker.getTypeAtLocation(node).aliasSymbol?.declarations ||
+  //     checker.getTypeAtLocation(node).getSymbol()?.getDeclarations();
+  //   const valueDeclaration = checker.getTypeAtLocation(node).symbol?.valueDeclaration;
+  //   if (node.getText() === "F") {
+  //     // log(valueDeclaration);
+  //     // log(declarations);
+  //     // log(checker.getTypeAtLocation(node).getSymbol()?.getDeclarations());
+  //     // log(checker.getTypeAtLocation(node).symbol?.declarations);
+  //     // log(checker.getTypeAtLocation(node).aliasSymbol?.valueDeclaration);
+  //   }
+  //   if (valueDeclaration) {
+  //     if (isAlreadyKnown(node, valueDeclaration, identifiers)) return;
+  //     lookForTypeDeclarations(valueDeclaration, sourceFile, checker, identifiers, indentLevel + 1);
+  //   } else if (declarations) {
+  //     declarations?.forEach((d) => {
+  //       if (isAlreadyKnown(node, d, identifiers)) return;
+  //       lookForTypeDeclarations(d, sourceFile, checker, identifiers, (indentLevel || 0) + 1);
+  //     });
+  //   } else {
+  //     log(checker.typeToString(checker.getTypeAtLocation(node)));
+  //   }
+  // } else {
+  //   node
+  //     .getChildren()
+  //     .forEach((c) =>
+  //       lookForTypeDeclarations(c, sourceFile, checker, identifiers, (indentLevel || 0) + 1)
+  //     );
+  // }
 };
 
 const isAlreadyKnown = (
@@ -66,6 +66,7 @@ const isAlreadyKnown = (
   declaration: ts.Declaration,
   identifiers: { [key: string]: { [key: string]: 1 } }
 ) => {
+  log(getFirstStageParent(declaration));
   if (ts.isSourceFile(declaration)) return false;
   if (
     identifiers[declaration.getSourceFile().fileName]?.[getFirstStageParent(declaration).getText()]
